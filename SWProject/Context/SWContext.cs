@@ -69,7 +69,8 @@ namespace SW.DAL
             modelBuilder.Entity<Jedi>()
                 .HasOne(jedi => jedi.Padawan)
                 .WithOne(jedi => jedi.Teacher)
-                .HasForeignKey<Jedi>(a => a.PadawanId); 
+                .HasForeignKey<Jedi>(a => a.PadawanId)
+                .OnDelete(DeleteBehavior.NoAction); 
                                                         
 
             modelBuilder.Entity<Clone>()

@@ -8,7 +8,6 @@ namespace SW.DAL
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private SWContext _swContext = new SWContext();
         private IGenericRepository<Clone> _cloneRepository;
         private IGenericRepository<Legion> _legionRepository;
         private IGenericRepository<Droid> _droidRepository;
@@ -18,12 +17,19 @@ namespace SW.DAL
         private IGenericRepository<Starship> _starshipRepository;
         private IGenericRepository<Supply> _supplyRepository;
         private IGenericRepository<StarshipWeaponry> _starshipWeaponryRepository;
+        
+        private SWContext _swContext { get; }
+
+        public UnitOfWork(SWContext context)
+        {
+            _swContext = context;
+        }
 
         public IGenericRepository<Clone> CloneRepository
-            => _cloneRepository ?? (_cloneRepository = new GenericRepository<Clone>(_swContext));
+            => _cloneRepository ??= new GenericRepository<Clone>(_swContext);
 
         public IGenericRepository<Droid> DroidRepository
-            => _droidRepository ?? (_droidRepository = new GenericRepository<Droid>(_swContext));
+            => _droidRepository ??= new GenericRepository<Droid>(_swContext);
 
         public IGenericRepository<Base> BaseRepository
             => _baseRepository ?? (_baseRepository = new GenericRepository<Base>(_swContext));
@@ -45,6 +51,7 @@ namespace SW.DAL
 
         public IGenericRepository<StarshipWeaponry> StarshipWeaponryRepository 
             => _starshipWeaponryRepository ?? (_starshipWeaponryRepository = new GenericRepository<StarshipWeaponry>(_swContext));
+
 
         public void Save()
         {
